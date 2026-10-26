@@ -14,7 +14,7 @@ public abstract class Persona {
 
     public Persona(String nombre, String direccion, String celular) {
         setNombre(nombre);
-        this.direccion = direccion;
+        setDireccion(direccion);
         setCelular(celular);
         this.activo = true;
     }
@@ -37,6 +37,9 @@ public abstract class Persona {
         if (nombre == null || nombre.trim().isEmpty()) {
             throw new IllegalArgumentException("El nombre es obligatorio");
         }
+        if (nombre.trim().length() > 100) {
+            throw new IllegalArgumentException("El nombre no puede tener más de 100 caracteres");
+        }
         this.nombre = nombre.trim();
     }
 
@@ -45,17 +48,20 @@ public abstract class Persona {
     }
 
     public void setDireccion(String direccion) {
+        if (direccion != null && direccion.trim().length() > 200) {
+            throw new IllegalArgumentException("La dirección no puede tener más de 200 caracteres");
+        }
         this.direccion = direccion;
     }
 
     public String getCelular() {
-        if (celular != null && celular.trim().length() > 15) {
-        throw new IllegalArgumentException("El celular no puede tener más de 15 caracteres");
-    }
         return celular;
     }
 
     public void setCelular(String celular) {
+        if (celular != null && celular.trim().length() > 15) {
+            throw new IllegalArgumentException("El celular no puede tener más de 15 caracteres");
+        }
         this.celular = celular;
     }
 

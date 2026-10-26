@@ -42,6 +42,9 @@ public class Proveedor extends Persona {
         if (empresa == null || empresa.trim().isEmpty()) {
             throw new IllegalArgumentException("El nombre de la empresa es obligatorio");
         }
+        if (empresa.trim().length() > 150) {
+            throw new IllegalArgumentException("El nombre de la empresa no puede tener más de 150 caracteres");
+        }
         this.empresa = empresa.trim();
     }
 

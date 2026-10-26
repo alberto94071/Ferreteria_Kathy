@@ -8,7 +8,8 @@ public class Cliente extends Persona {
     public Cliente() {
     }
 
-    public Cliente(String nombre, String direccion, String celular, double limiteCredito, int diasCredito) {
+    public Cliente(String nombre, String direccion, String celular,
+                   double limiteCredito, int diasCredito) {
         super(nombre, direccion, celular);
         setLimiteCredito(limiteCredito);
         setDiasCredito(diasCredito);
@@ -17,6 +18,10 @@ public class Cliente extends Persona {
     @Override
     public String getTipo() {
         return "Cliente";
+    }
+
+    public boolean puedeRecibirCredito(double deudaPendiente) {
+        return limiteCredito > 0 && deudaPendiente <= 0;
     }
 
     public double getLimiteCredito() {
@@ -36,12 +41,8 @@ public class Cliente extends Persona {
 
     public void setDiasCredito(int diasCredito) {
         if (diasCredito < 0) {
-            throw new IllegalArgumentException("El límite de días de crédito no puede ser menor a 0");
+            throw new IllegalArgumentException("Los días de crédito no pueden ser negativos");
         }
         this.diasCredito = diasCredito;
-    }
-
-    public boolean puedeRecibirCredito(double deudaPendiente) {
-        return limiteCredito > 0 && deudaPendiente <= 0;
     }
 }

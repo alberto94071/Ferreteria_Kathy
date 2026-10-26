@@ -13,14 +13,14 @@ public class Categoria {
 
     public Categoria(String nombre, String descripcion) {
         setNombre(nombre);
-        this.descripcion = descripcion;
+        setDescripcion(descripcion);
         this.activa = true;
     }
 
     public Categoria(int idCategoria, String nombre, String descripcion, boolean activa) {
         this.idCategoria = idCategoria;
         setNombre(nombre);
-        this.descripcion = descripcion;
+        setDescripcion(descripcion);
         this.activa = activa;
     }
 
@@ -40,6 +40,9 @@ public class Categoria {
         if (nombre == null || nombre.trim().isEmpty()) {
             throw new IllegalArgumentException("El nombre de la categoría es obligatorio");
         }
+        if (nombre.trim().length() > 50) {
+            throw new IllegalArgumentException("El nombre de la categoría no puede tener más de 50 caracteres");
+        }
         this.nombre = nombre.trim();
     }
 
@@ -48,6 +51,9 @@ public class Categoria {
     }
 
     public void setDescripcion(String descripcion) {
+        if (descripcion != null && descripcion.trim().length() > 200) {
+            throw new IllegalArgumentException("La descripción no puede tener más de 200 caracteres");
+        }
         this.descripcion = descripcion;
     }
 
@@ -63,5 +69,4 @@ public class Categoria {
     public String toString() {
         return nombre;
     }
-
 }
