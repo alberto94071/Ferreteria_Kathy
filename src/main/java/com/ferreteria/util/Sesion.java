@@ -10,22 +10,31 @@ public class Sesion {
     }
 
     public static void iniciar(Usuario usuario) {
-        throw new UnsupportedOperationException("Pendiente");
+        if (usuario == null) {
+            throw new IllegalArgumentException("No se puede iniciar sesión sin un usuario");
+        }
+        if (!usuario.isActivo()) {
+            throw new IllegalStateException("El usuario está desactivado");
+        }
+        usuarioActual = usuario;
     }
 
     public static Usuario getUsuarioActual() {
-        throw new UnsupportedOperationException("Pendiente");
+        if (usuarioActual == null) {
+            throw new IllegalStateException("No hay ninguna sesión iniciada");
+        }
+        return usuarioActual;
     }
 
     public static boolean haySesion() {
-        throw new UnsupportedOperationException("Pendiente");
+        return usuarioActual != null;
     }
 
     public static boolean esAdministrador() {
-        throw new UnsupportedOperationException("Pendiente");
+        return haySesion() && usuarioActual.esAdministrador();
     }
 
     public static void cerrar() {
-        throw new UnsupportedOperationException("Pendiente");
+        usuarioActual = null;
     }
 }
