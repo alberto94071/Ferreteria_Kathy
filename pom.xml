@@ -8,26 +8,21 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <!-- Se compila para Java 8 para que funcione en la computadora con Windows 7.
-             Se puede seguir usando un JDK más nuevo (17, 21, 27) en NetBeans. -->
         <maven.compiler.release>8</maven.compiler.release>
         <exec.mainClass>com.ferreteria.vista.App</exec.mainClass>
     </properties>
 
     <dependencies>
-        <!-- Driver de MySQL: la versión 8.0.33 funciona con MySQL 5.7 y 8.0 -->
         <dependency>
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
             <version>8.0.33</version>
         </dependency>
-        <!-- Convierte datos a JSON para la API de la app móvil -->
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
             <version>2.11.0</version>
         </dependency>
-        <!-- Apariencia moderna para Swing -->
         <dependency>
             <groupId>com.formdev</groupId>
             <artifactId>flatlaf</artifactId>
@@ -48,7 +43,6 @@
                     </compilerArgs>
                 </configuration>
             </plugin>
-            <!-- Genera un solo .jar con todo adentro (driver y FlatLaf incluidos) -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>

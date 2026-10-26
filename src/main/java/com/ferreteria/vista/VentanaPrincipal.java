@@ -1,5 +1,6 @@
 package com.ferreteria.vista;
 
+import com.ferreteria.api.ServidorApi;
 import com.ferreteria.dao.UsuarioDAO;
 import com.ferreteria.modelo.Usuario;
 import com.ferreteria.util.Conexion;
@@ -33,7 +34,10 @@ import javax.swing.JPasswordField;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 
-
+/**
+ * Ventana principal: menú a la izquierda y la pantalla elegida a la derecha.
+ * Las pantallas se crean la primera vez que se abren (CardLayout).
+ */
 public class VentanaPrincipal extends JFrame {
 
     public static final String INICIO = "Inicio";
@@ -207,7 +211,7 @@ public class VentanaPrincipal extends JFrame {
         pie.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createMatteBorder(1, 0, 0, 0, Estilo.MENU_BORDE), Estilo.borde(12, 8, 0, 8)));
         pie.setAlignmentX(LEFT_ALIGNMENT);
-        pie.setMaximumSize(new Dimension(Integer.MAX_VALUE, 120));
+        pie.setMaximumSize(new Dimension(Integer.MAX_VALUE, 170));
 
         Usuario u = Sesion.getUsuarioActual();
         JLabel nombre = new JLabel(u.getNombre());
@@ -218,6 +222,17 @@ public class VentanaPrincipal extends JFrame {
         rol.setFont(rol.getFont().deriveFont(11f));
         pie.add(nombre);
         pie.add(rol);
+        pie.add(Box.createVerticalStrut(8));
+
+        // Dirección que se escribe en la app del celular
+        JLabel app = new JLabel(ServidorApi.activo()
+                ? "<html>App móvil:<br><b>" + ServidorApi.direccion() + "</b></html>"
+                : "<html>App móvil no disponible</html>");
+        app.setForeground(new Color(0x94A3B8));
+        app.setFont(app.getFont().deriveFont(11f));
+        app.setToolTipText(ServidorApi.activo() ? "Escriba esta dirección en la app del celular"
+                : ServidorApi.getError());
+        pie.add(app);
         pie.add(Box.createVerticalStrut(8));
         pie.add(enlace("Cambiar mi contraseña", e -> cambiarContrasena()));
         pie.add(enlace("Cerrar sesión", e -> cerrarSesion()));

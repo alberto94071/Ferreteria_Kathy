@@ -14,7 +14,12 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
-
+/**
+ * Abre conexiones a MySQL.
+ * Los datos de conexión se leen del archivo config.properties que está
+ * junto al programa. Si no existe, se usan los valores por defecto
+ * (localhost, usuario root, contraseña root).
+ */
 public class Conexion {
 
     private static final String ARCHIVO = "config.properties";
@@ -32,13 +37,19 @@ public class Conexion {
                 config.getProperty("contrasena", "root"));
     }
 
-
+    // Nombre que aparece en las ventanas (propiedad nombre_negocio)
     public static String nombreNegocio() {
         cargarConfiguracion();
         return config.getProperty("nombre_negocio", "Ferretería");
     }
 
-    
+    // Cualquier otra propiedad de config.properties (por ejemplo api_puerto)
+    public static String propiedad(String clave, String porDefecto) {
+        cargarConfiguracion();
+        return config.getProperty(clave, porDefecto).trim();
+    }
+
+    // Texto para mostrar en mensajes de error (sin la contraseña)
     public static String descripcion() {
         cargarConfiguracion();
         return url.substring(0, url.indexOf('?')) + " (usuario " + config.getProperty("usuario", "root") + ")";
@@ -64,7 +75,7 @@ public class Conexion {
                 + "&serverTimezone=America/Guatemala&characterEncoding=UTF-8";
     }
 
- 
+    // El Bloc de notas de Windows 7 guarda en ANSI; si el archivo no es UTF-8 válido se lee como Windows-1252
     private static String leerTexto(File archivo) throws IOException {
         byte[] bytes = Files.readAllBytes(archivo.toPath());
         String texto;
