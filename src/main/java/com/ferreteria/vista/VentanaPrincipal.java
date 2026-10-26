@@ -33,10 +33,7 @@ import javax.swing.JPasswordField;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 
-/**
- * Ventana principal: menú a la izquierda y la pantalla elegida a la derecha.
- * Las pantallas se crean la primera vez que se abren (CardLayout).
- */
+
 public class VentanaPrincipal extends JFrame {
 
     public static final String INICIO = "Inicio";
