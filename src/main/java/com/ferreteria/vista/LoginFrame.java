@@ -12,6 +12,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.sql.SQLException;
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -35,6 +36,7 @@ public class LoginFrame extends JFrame {
         super(Conexion.nombreNegocio() + " — Iniciar sesión");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
+        setIconImages(Logo.iconosVentana());
 
         JPanel raiz = new JPanel(new BorderLayout());
         raiz.add(crearLadoIzquierdo(), BorderLayout.WEST);
@@ -48,30 +50,40 @@ public class LoginFrame extends JFrame {
     private JPanel crearLadoIzquierdo() {
         JPanel p = new JPanel();
         p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
-        p.setBackground(Estilo.MENU_FONDO);
-        p.setBorder(Estilo.borde(48, 40, 32, 40));
-        p.setPreferredSize(new Dimension(320, 0));
+        p.setBackground(Estilo.FONDO_LOGIN);
+        p.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createMatteBorder(0, 0, 0, 4, Estilo.AMARILLO), Estilo.borde(40, 36, 28, 36)));
+        p.setPreferredSize(new Dimension(330, 0));
+        p.add(Box.createVerticalGlue());
 
-        Logo logo = new Logo(56);
-        logo.setAlignmentX(LEFT_ALIGNMENT);
-        p.add(logo);
-        p.add(Box.createVerticalStrut(20));
-
-        JLabel nombre = new JLabel("<html>" + Conexion.nombreNegocio() + "</html>");
-        nombre.setFont(nombre.getFont().deriveFont(Font.BOLD, 24f));
-        nombre.setForeground(Color.WHITE);
-        nombre.setAlignmentX(LEFT_ALIGNMENT);
-        p.add(nombre);
-        p.add(Box.createVerticalStrut(12));
+        // Logotipo completo; si falta la imagen se usa el ícono y el nombre del negocio
+        javax.swing.ImageIcon imagen = Logo.logoCompleto(254);
+        if (imagen != null) {
+            JLabel logo = new JLabel(imagen);
+            logo.setAlignmentX(LEFT_ALIGNMENT);
+            p.add(logo);
+        } else {
+            Logo logo = new Logo(64);
+            logo.setAlignmentX(LEFT_ALIGNMENT);
+            p.add(logo);
+            p.add(Box.createVerticalStrut(16));
+            JLabel nombre = new JLabel("<html>" + Conexion.nombreNegocio() + "</html>");
+            nombre.setFont(nombre.getFont().deriveFont(Font.BOLD, 24f));
+            nombre.setForeground(Estilo.AZUL);
+            nombre.setAlignmentX(LEFT_ALIGNMENT);
+            p.add(nombre);
+        }
+        p.add(Box.createVerticalStrut(22));
 
         JLabel descripcion = new JLabel("<html>Sistema de inventario, ventas, compras y créditos.</html>");
-        descripcion.setForeground(Estilo.MENU_TEXTO);
+        descripcion.setForeground(Estilo.TEXTO_SUAVE);
+        descripcion.setFont(descripcion.getFont().deriveFont(14f));
         descripcion.setAlignmentX(LEFT_ALIGNMENT);
         p.add(descripcion);
         p.add(Box.createVerticalGlue());
 
         JLabel version = new JLabel("Versión 1.0");
-        version.setForeground(new Color(0x94A3B8));
+        version.setForeground(Estilo.TEXTO_SUAVE);
         version.setFont(version.getFont().deriveFont(12f));
         version.setAlignmentX(LEFT_ALIGNMENT);
         p.add(version);
@@ -156,6 +168,10 @@ public class LoginFrame extends JFrame {
                     + "Verifique que MySQL esté encendido y que los datos de\n"
                     + "config.properties sean correctos.\n\n"
                     + Conexion.descripcion() + "\n\nDetalle: " + ex.getMessage());
+        } catch (RuntimeException ex) {
+            // Cualquier otro error (por ejemplo una clase sin terminar) se muestra en lugar de quedarse callado
+            ex.printStackTrace();
+            Dialogos.error(this, "Ocurrió un error al iniciar sesión:\n" + ex);
         }
     }
 }

@@ -29,10 +29,18 @@ import javax.swing.border.Border;
  */
 public final class Estilo {
 
-    public static final Color ACENTO = new Color(0xC2410C);
-    public static final Color MENU_FONDO = new Color(0x1E293B);
-    public static final Color MENU_TEXTO = new Color(0xCBD5E1);
-    public static final Color MENU_BORDE = new Color(0x334155);
+    // ---- Colores del logotipo de Ferretería Kathy ----
+    public static final Color AZUL = new Color(0x0B4983);
+    public static final Color AMARILLO = new Color(0xF6B238);
+    public static final Color AZUL_MARINO = new Color(0x072F57);
+
+    // Botones principales y foco: azul del logo
+    public static final Color ACENTO = AZUL;
+    // Menú lateral: azul marino; la opción activa va en amarillo
+    public static final Color MENU_FONDO = AZUL_MARINO;
+    public static final Color MENU_TEXTO = new Color(0xD3E2F4);
+    public static final Color MENU_BORDE = new Color(0x15497D);
+    public static final Color MENU_ACTIVO = AMARILLO;
     public static final Color FONDO = new Color(0xF8FAFC);
     public static final Color BLANCO = Color.WHITE;
     public static final Color BORDE = new Color(0xE2E8F0);
@@ -47,7 +55,9 @@ public final class Estilo {
     public static final Color AVISO_FONDO = new Color(0xFFFBEB);
     public static final Color INFO = new Color(0x1D4ED8);
     public static final Color INFO_FONDO = new Color(0xEFF6FF);
-    public static final Color SELECCION = new Color(0xFFEDD5);
+    // Fila seleccionada en tablas: amarillo muy claro
+    public static final Color SELECCION = new Color(0xFDEBC4);
+    public static final Color FONDO_LOGIN = new Color(0xF1F5FB);
 
     private Estilo() {
     }

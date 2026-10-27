@@ -63,6 +63,7 @@ public class VentanaPrincipal extends JFrame {
     public VentanaPrincipal() {
         super(Conexion.nombreNegocio() + " — Sistema de Inventario y Ventas");
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        setIconImages(Logo.iconosVentana());
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -133,15 +134,22 @@ public class VentanaPrincipal extends JFrame {
         menu.setBorder(Estilo.borde(16, 12, 16, 12));
         menu.setPreferredSize(new Dimension(210, 0));
 
+        // Logotipo arriba del menú (si no se encuentra la imagen, ícono + nombre)
+        javax.swing.ImageIcon imagen = Logo.logoCompleto(186);
         JPanel marca = new JPanel(new BorderLayout(10, 0));
         marca.setOpaque(false);
-        marca.add(new Logo(32), BorderLayout.WEST);
-        JLabel nombre = new JLabel(Conexion.nombreNegocio());
-        nombre.setForeground(Color.WHITE);
-        nombre.setFont(nombre.getFont().deriveFont(Font.BOLD, 15f));
-        marca.add(nombre, BorderLayout.CENTER);
+        if (imagen != null) {
+            marca.add(new JLabel(imagen), BorderLayout.CENTER);
+            marca.setMaximumSize(new Dimension(Integer.MAX_VALUE, imagen.getIconHeight() + 4));
+        } else {
+            marca.add(new Logo(32), BorderLayout.WEST);
+            JLabel nombre = new JLabel(Conexion.nombreNegocio());
+            nombre.setForeground(Color.WHITE);
+            nombre.setFont(nombre.getFont().deriveFont(Font.BOLD, 15f));
+            marca.add(nombre, BorderLayout.CENTER);
+            marca.setMaximumSize(new Dimension(Integer.MAX_VALUE, 36));
+        }
         marca.setAlignmentX(LEFT_ALIGNMENT);
-        marca.setMaximumSize(new Dimension(Integer.MAX_VALUE, 36));
         menu.add(marca);
         menu.add(Box.createVerticalStrut(18));
     }
@@ -191,8 +199,8 @@ public class VentanaPrincipal extends JFrame {
 
     private void pintarBoton(JButton b, boolean activo, boolean encima) {
         if (activo) {
-            b.setBackground(Estilo.ACENTO);
-            b.setForeground(Color.WHITE);
+            b.setBackground(Estilo.MENU_ACTIVO);
+            b.setForeground(Estilo.AZUL_MARINO);
             b.setFont(b.getFont().deriveFont(Font.BOLD));
         } else {
             b.setBackground(encima ? Estilo.MENU_BORDE : Estilo.MENU_FONDO);
@@ -244,7 +252,7 @@ public class VentanaPrincipal extends JFrame {
         b.setBorder(Estilo.borde(3, 0, 3, 0));
         b.setContentAreaFilled(false);
         b.setFocusPainted(false);
-        b.setForeground(new Color(0xFDBA74));
+        b.setForeground(Estilo.AMARILLO);
         b.setFont(b.getFont().deriveFont(12f));
         b.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         b.addActionListener(accion);
