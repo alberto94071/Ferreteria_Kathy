@@ -1,12 +1,16 @@
 package com.ferreteria.api;
 
+import com.ferreteria.dao.CategoriaDAO;
 import com.ferreteria.dao.CreditoDAO;
+import com.ferreteria.dao.MarcaDAO;
 import com.ferreteria.dao.ProductoDAO;
 import com.ferreteria.dao.UsuarioDAO;
 import com.ferreteria.dao.VentaDAO;
 import com.ferreteria.modelo.Abono;
+import com.ferreteria.modelo.Categoria;
 import com.ferreteria.modelo.Cliente;
 import com.ferreteria.modelo.Credito;
+import com.ferreteria.modelo.Marca;
 import com.ferreteria.modelo.Producto;
 import com.ferreteria.modelo.Usuario;
 import com.ferreteria.util.Conexion;
@@ -48,6 +52,9 @@ import java.util.concurrent.ConcurrentHashMap;
  *   GET  /api/creditos?filtro=pendientes|vencidos
  *   GET  /api/creditos/detalle?id=5
  *   POST /api/creditos/abono  {idCredito, monto}
+ *   GET  /api/catalogos                      marcas, categorías y unidades para el formulario
+ *   POST /api/productos/nuevo  {codigo, nombre, unidad, presentacion, idMarca, idCategoria,
+ *                               precioCompra, precioVenta, existencia, minimo}
  *
  * Todas excepto ping y login piden el encabezado  Authorization: Bearer <token>
  */
@@ -62,6 +69,13 @@ final class Rutas {
     private static final ProductoDAO productoDAO = new ProductoDAO();
     private static final VentaDAO ventaDAO = new VentaDAO();
     private static final CreditoDAO creditoDAO = new CreditoDAO();
+    private static final MarcaDAO marcaDAO = new MarcaDAO();
+    private static final CategoriaDAO categoriaDAO = new CategoriaDAO();
+
+    private static final String[] UNIDADES = {
+        "unidad", "libra", "kilo", "quintal", "metro", "pie", "yarda", "galón", "litro",
+        "caja", "saco", "rollo", "par", "juego", "bolsa", "cubeta"
+    };
 
     private Rutas() {
     }
@@ -81,6 +95,8 @@ final class Rutas {
         s.createContext("/api/creditos", ruta("GET", true, Rutas::creditos));
         s.createContext("/api/creditos/detalle", ruta("GET", true, p -> credito(buscarCredito(p.entero("id")))));
         s.createContext("/api/creditos/abono", ruta("POST", true, Rutas::abonar));
+        s.createContext("/api/catalogos", ruta("GET", true, p -> catalogos()));
+        s.createContext("/api/productos/nuevo", ruta("POST", true, Rutas::nuevoProducto));
     }
 
     // ---------- Rutas ----------
@@ -152,6 +168,50 @@ final class Rutas {
         double monto = p.numero("monto");
         creditoDAO.registrarAbono(c, new Abono(monto, p.usuario));
         return credito(c);
+    }
+
+    private static Object catalogos() throws Exception {
+        List<Object> marcas = new ArrayList<>();
+        for (Marca m : marcaDAO.listarActivas()) {
+            marcas.add(mapa("id", m.getIdMarca(), "nombre", m.getNombre()));
+        }
+        List<Object> categorias = new ArrayList<>();
+        for (Categoria c : categoriaDAO.listar()) {
+            if (c.isActiva()) {
+                categorias.add(mapa("id", c.getIdCategoria(), "nombre", c.getNombre()));
+            }
+        }
+        return mapa("marcas", marcas, "categorias", categorias, "unidades", UNIDADES);
+    }
+
+    // Crea un producto desde el celular. Las validaciones son las del modelo Producto y del DAO
+    // (por ejemplo, no permite dos productos con el mismo código).
+    private static Object nuevoProducto(Peticion p) throws Exception {
+        Marca marca = null;
+        int idMarca = p.enteroOpcional("idMarca");
+        if (idMarca > 0) {
+            marca = marcaDAO.buscarPorId(idMarca);
+        }
+        Categoria categoria = null;
+        int idCategoria = p.enteroOpcional("idCategoria");
+        if (idCategoria > 0) {
+            categoria = categoriaDAO.buscarPorId(idCategoria);
+        }
+        Producto nuevo = new Producto(
+                p.textoOpcional("codigo"),
+                p.texto("nombre"),
+                p.texto("unidad"),
+                p.textoOpcional("presentacion"),
+                marca,
+                categoria,
+                p.numero("precioCompra"),
+                p.numero("precioVenta"),
+                p.numero("existencia"),
+                p.numero("minimo"),
+                null);
+        productoDAO.insertar(nuevo);
+        System.out.println("Producto creado desde el celular por " + p.usuario.getNombreUsuario() + ": " + nuevo);
+        return producto(nuevo, true);
     }
 
     private static Credito buscarCredito(int id) throws SQLException {
@@ -328,6 +388,28 @@ final class Rutas {
                 throw new IllegalArgumentException("Falta el dato '" + nombre + "'");
             }
             return e.getAsString();
+        }
+
+        // Dato que puede venir vacío: devuelve null
+        String textoOpcional(String nombre) {
+            JsonElement e = cuerpo.get(nombre);
+            if (e == null || e.isJsonNull() || e.getAsString().trim().isEmpty()) {
+                return null;
+            }
+            return e.getAsString().trim();
+        }
+
+        // Número entero que puede venir vacío: devuelve 0
+        int enteroOpcional(String nombre) {
+            String v = textoOpcional(nombre);
+            if (v == null) {
+                return 0;
+            }
+            try {
+                return (int) Double.parseDouble(v);
+            } catch (NumberFormatException e) {
+                throw new IllegalArgumentException("'" + nombre + "' debe ser un número entero");
+            }
         }
 
         double numero(String nombre) {

@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Statement;
 import java.sql.Types;
 import java.util.ArrayList;
@@ -46,6 +47,9 @@ public class ProductoDAO {
                     producto.setIdProducto(rs.getInt(1));
                 }
             }
+        } catch (SQLIntegrityConstraintViolationException e) {
+            // Dos personas guardaron el mismo código al mismo tiempo: la BD aceptó solo uno
+            throw new IllegalArgumentException("Ya existe un producto con el código " + producto.getCodigo());
         }
         if (producto instanceof Kit) {
             Kit kit = (Kit) producto;

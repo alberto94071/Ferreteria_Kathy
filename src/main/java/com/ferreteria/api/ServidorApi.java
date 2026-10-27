@@ -37,11 +37,10 @@ public final class ServidorApi {
             return;
         }
         try {
-
             puerto = Integer.parseInt(Conexion.propiedad("api_puerto", "8080"));
             servidor = HttpServer.create(new InetSocketAddress(puerto), 0);
             Rutas.registrar(servidor);
-            servidor.setExecutor(Executors.newFixedThreadPool(4));
+            servidor.setExecutor(Executors.newFixedThreadPool(8));
             servidor.start();
             System.out.println("API para la app móvil en " + direccion());
         } catch (IOException | NumberFormatException e) {

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.Ferreteria" parent="Theme.MaterialComponents.Light.DarkActionBar">
+        <item name="colorPrimary">@color/acento</item>
+        <item name="colorPrimaryVariant">@color/acento_oscuro</item>
+        <item name="colorOnPrimary">@color/blanco</item>
+        <item name="colorSecondary">@color/amarillo</item>
+        <item name="colorSecondaryVariant">@color/amarillo</item>
+        <item name="colorOnSecondary">@color/azul_marino</item>
+        <item name="android:statusBarColor">@color/acento_oscuro</item>
+        <item name="android:windowBackground">@color/fondo</item>
+    </style>
+
+    <style name="Theme.Ferreteria.SinBarra">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:statusBarColor">@color/fondo_claro</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+
+    <!-- Tarjeta blanca con borde gris -->
+    <style name="Tarjeta">
+        <item name="cardBackgroundColor">@color/blanco</item>
+        <item name="cardCornerRadius">12dp</item>
+        <item name="cardElevation">0dp</item>
+        <item name="strokeColor">@color/borde</item>
+        <item name="strokeWidth">1dp</item>
+    </style>
+</resources>
