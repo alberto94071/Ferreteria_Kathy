@@ -33,7 +33,7 @@ public final class Estilo {
 
     
     public static final Color ACENTO = AZUL;
-    public static final Color MENU_FONDO = new Color(AZUL_MARINO);
+    public static final Color MENU_FONDO = AZUL_MARINO;
     public static final Color MENU_TEXTO = new Color(0xD3E2F4);
     public static final Color MENU_BORDE = new Color(0x15497D);
     public static final Color MENU_ACTIVO = AMARILLO;
