@@ -39,30 +39,11 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-/**
- * Todas las rutas de la API. Cada una devuelve JSON.
- *
- *   GET  /api/ping                          ¿está encendido el servidor?
- *   POST /api/login      {usuario, contrasena}   -> {token, nombre, rol}
- *   POST /api/logout
- *   GET  /api/resumen                        ventas de hoy, bajo stock, créditos
- *   GET  /api/productos?buscar=texto
- *   GET  /api/productos/bajo-stock
- *   GET  /api/productos/codigo?valor=ABC     (código de barras)
- *   GET  /api/creditos?filtro=pendientes|vencidos
- *   GET  /api/creditos/detalle?id=5
- *   POST /api/creditos/abono  {idCredito, monto}
- *   GET  /api/catalogos                      marcas, categorías y unidades para el formulario
- *   POST /api/productos/nuevo  {codigo, nombre, unidad, presentacion, idMarca, idCategoria,
- *                               precioCompra, precioVenta, existencia, minimo}
- *
- * Todas excepto ping y login piden el encabezado  Authorization: Bearer <token>
- */
+
 final class Rutas {
 
     private static final Gson GSON = new GsonBuilder().serializeNulls().create();
 
-    // Sesiones abiertas desde celulares: token -> usuario
     private static final Map<String, Usuario> SESIONES = new ConcurrentHashMap<>();
 
     private static final UsuarioDAO usuarioDAO = new UsuarioDAO();
@@ -88,7 +69,8 @@ final class Rutas {
             SESIONES.remove(p.token);
             return mapa("ok", true);
         }));
-        s.createContext("/api/resumen", ruta("GET", true, p -> resumen()));
+        s.createContext("/api/resumen", ruta("GET", true, p -> resumen())
+        );
         s.createContext("/api/productos", ruta("GET", true, Rutas::productos));
         s.createContext("/api/productos/bajo-stock", ruta("GET", true, p -> listaProductos(productoDAO.listarBajoStock(), p)));
         s.createContext("/api/productos/codigo", ruta("GET", true, Rutas::productoPorCodigo));
@@ -99,8 +81,7 @@ final class Rutas {
         s.createContext("/api/productos/nuevo", ruta("POST", true, Rutas::nuevoProducto));
     }
 
-    // ---------- Rutas ----------
-
+    
     private static Object login(Peticion p) throws Exception {
         String usuario = p.texto("usuario");
         String contrasena = p.texto("contrasena");
@@ -184,8 +165,7 @@ final class Rutas {
         return mapa("marcas", marcas, "categorias", categorias, "unidades", UNIDADES);
     }
 
-    // Crea un producto desde el celular. Las validaciones son las del modelo Producto y del DAO
-    // (por ejemplo, no permite dos productos con el mismo código).
+    
     private static Object nuevoProducto(Peticion p) throws Exception {
         Marca marca = null;
         int idMarca = p.enteroOpcional("idMarca");
@@ -299,7 +279,7 @@ final class Rutas {
         }
     }
 
-    // Envuelve cada ruta: revisa método y token, y convierte errores en respuestas JSON
+    
     private static HttpHandler ruta(String metodo, boolean pideSesion, Accion accion) {
         return ex -> {
             try {
@@ -341,7 +321,7 @@ final class Rutas {
         }
     }
 
-    // Datos de una petición: parámetros de la URL, cuerpo JSON, token y usuario
+    
     static class Peticion {
         final Map<String, String> parametros = new HashMap<>();
         final JsonObject cuerpo;

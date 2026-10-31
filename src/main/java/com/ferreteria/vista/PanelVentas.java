@@ -80,7 +80,6 @@ public class PanelVentas extends JPanel implements Pantalla {
 
         // Atajos de teclado
         registrarTecla(KeyEvent.VK_F12, this::confirmar);
-        // Supr solo cuando la tabla tiene el foco (para no estorbar al escribir)
         tabla.getInputMap(WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0), "quitar");
         tabla.getActionMap().put("quitar", new javax.swing.AbstractAction() {
             @Override
@@ -415,9 +414,6 @@ public class PanelVentas extends JPanel implements Pantalla {
         campoProducto.requestFocus();
     }
 
-    // ---------- Ayudas de diseño ----------
-
-    // El color del botón seleccionado lo pone FlatLaf (ToggleButton.selectedBackground en Estilo)
     private void pintarToggle(JToggleButton b) {
         b.setForeground(b.isSelected() ? Color.WHITE : Estilo.TEXTO);
     }

@@ -23,21 +23,17 @@ import javax.swing.SpinnerDateModel;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 
-/**
- * Colores, tipografía y fábrica de componentes con el mismo estilo.
- * Si quiere cambiar el color de la aplicación, cambie ACENTO.
- */
+
 public final class Estilo {
 
-    // ---- Colores del logotipo de Ferretería Kathy ----
+    
     public static final Color AZUL = new Color(0x0B4983);
     public static final Color AMARILLO = new Color(0xF6B238);
     public static final Color AZUL_MARINO = new Color(0x072F57);
 
-    // Botones principales y foco: azul del logo
+    
     public static final Color ACENTO = AZUL;
-    // Menú lateral: azul marino; la opción activa va en amarillo
-    public static final Color MENU_FONDO = AZUL_MARINO;
+    public static final Color MENU_FONDO = new Color(AZUL_MARINO);
     public static final Color MENU_TEXTO = new Color(0xD3E2F4);
     public static final Color MENU_BORDE = new Color(0x15497D);
     public static final Color MENU_ACTIVO = AMARILLO;
@@ -55,14 +51,12 @@ public final class Estilo {
     public static final Color AVISO_FONDO = new Color(0xFFFBEB);
     public static final Color INFO = new Color(0x1D4ED8);
     public static final Color INFO_FONDO = new Color(0xEFF6FF);
-    // Fila seleccionada en tablas: amarillo muy claro
     public static final Color SELECCION = new Color(0xFDEBC4);
     public static final Color FONDO_LOGIN = new Color(0xF1F5FB);
 
     private Estilo() {
     }
 
-    // Se llama una sola vez al iniciar el programa
     public static void instalar() {
         FlatLightLaf.setup();
         Font base = UIManager.getFont("defaultFont");
@@ -100,7 +94,6 @@ public final class Estilo {
         UIManager.put("ScrollBar.width", 12);
     }
 
-    // ---------- Texto ----------
 
     public static JLabel titulo(String texto) {
         JLabel l = new JLabel(texto);

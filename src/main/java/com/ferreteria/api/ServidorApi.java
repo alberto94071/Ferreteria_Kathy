@@ -10,15 +10,7 @@ import java.net.NetworkInterface;
 import java.util.Enumeration;
 import java.util.concurrent.Executors;
 
-/**
- * Servidor web pequeño para la app del celular.
- *
- * Arranca junto con el programa de escritorio y escucha en el puerto de
- * config.properties (api_puerto, 8080 por defecto). El celular se conecta
- * por el Wi-Fi de la tienda a  http://IP-de-esta-computadora:8080/api/...
- *
- * No necesita internet. Usa los mismos DAO que la interfaz de escritorio.
- */
+
 public final class ServidorApi {
 
     private static HttpServer servidor;

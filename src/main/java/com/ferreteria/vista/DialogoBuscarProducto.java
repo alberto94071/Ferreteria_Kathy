@@ -112,10 +112,7 @@ public class DialogoBuscarProducto extends JDialog {
         return d.elegido;
     }
 
-    /**
-     * Busca lo que se escribió en un campo: primero por código exacto (lector de barras),
-     * si hay un solo resultado lo devuelve directo, si hay varios abre la ventana para elegir.
-     */
+   
     public static Producto resolver(Component padre, String texto) throws java.sql.SQLException {
         String t = texto == null ? "" : texto.trim();
         if (!t.isEmpty()) {
