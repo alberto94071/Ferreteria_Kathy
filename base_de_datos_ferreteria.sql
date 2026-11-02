@@ -1,16 +1,10 @@
--- =========================================================
---  Sistema de Inventario y Ventas - Ferretería
---  Script completo de la base de datos (MySQL 8)
---  Se puede ejecutar varias veces: no borra datos existentes.
--- =========================================================
+
 
 CREATE DATABASE IF NOT EXISTS ferreteria
     CHARACTER SET utf8mb4 COLLATE utf8mb4_spanish_ci;
 USE ferreteria;
 
--- ---------------------------------------------------------
---  Catálogos
--- ---------------------------------------------------------
+
 CREATE TABLE IF NOT EXISTS categoria (
     id_categoria INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(50) NOT NULL UNIQUE,
@@ -25,9 +19,7 @@ CREATE TABLE IF NOT EXISTS marca (
     activa BOOLEAN NOT NULL DEFAULT TRUE
 );
 
--- ---------------------------------------------------------
---  Personas (Persona es abstracta: una tabla por cada hija)
--- ---------------------------------------------------------
+
 CREATE TABLE IF NOT EXISTS cliente (
     id_cliente INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
@@ -61,9 +53,7 @@ CREATE TABLE IF NOT EXISTS usuario (
     activo BOOLEAN NOT NULL DEFAULT TRUE
 );
 
--- ---------------------------------------------------------
---  Productos y kits
--- ---------------------------------------------------------
+
 CREATE TABLE IF NOT EXISTS producto (
     id_producto INT AUTO_INCREMENT PRIMARY KEY,
     codigo VARCHAR(100) UNIQUE,
@@ -100,13 +90,11 @@ CREATE TABLE IF NOT EXISTS componente_kit (
     CHECK (peso > 0)
 );
 
--- ---------------------------------------------------------
---  Ventas y créditos
--- ---------------------------------------------------------
+
 CREATE TABLE IF NOT EXISTS venta (
     id_venta INT AUTO_INCREMENT PRIMARY KEY,
     fecha DATETIME NOT NULL,
-    id_cliente INT NULL,                       -- NULL = consumidor final
+    id_cliente INT NULL,                       
     id_usuario INT NOT NULL,
     es_credito BOOLEAN NOT NULL DEFAULT FALSE,
     total DECIMAL(12,2) NOT NULL DEFAULT 0,
@@ -145,9 +133,7 @@ CREATE TABLE IF NOT EXISTS abono (
     CHECK (monto > 0)
 );
 
--- ---------------------------------------------------------
---  Compras
--- ---------------------------------------------------------
+
 CREATE TABLE IF NOT EXISTS compra (
     id_compra INT AUTO_INCREMENT PRIMARY KEY,
     fecha DATETIME NOT NULL,
@@ -171,9 +157,7 @@ CREATE TABLE IF NOT EXISTS detalle_compra (
     CHECK (precio_costo >= 0)
 );
 
--- ---------------------------------------------------------
---  Bajas de inventario (pérdidas, daños, vencidos)
--- ---------------------------------------------------------
+
 CREATE TABLE IF NOT EXISTS baja_inventario (
     id_baja INT AUTO_INCREMENT PRIMARY KEY,
     id_producto INT NOT NULL,
@@ -186,10 +170,7 @@ CREATE TABLE IF NOT EXISTS baja_inventario (
     CHECK (cantidad > 0)
 );
 
--- ---------------------------------------------------------
---  Usuario administrador inicial
---  usuario: admin   contraseña: admin123  (cámbiela después)
--- ---------------------------------------------------------
+
 INSERT IGNORE INTO usuario (nombre, nombre_usuario, contrasena, rol)
 VALUES ('Administrador', 'admin',
         '240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9',
