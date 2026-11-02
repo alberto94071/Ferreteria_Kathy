@@ -80,12 +80,10 @@ O en esta página: botón verde **Code** → **Download ZIP**, y descomprimirlo.
 ### 2. Crear la base de datos
 
 1. Abrir MySQL Workbench y conectarse al servidor local.
-2. **File → Open SQL Script** y escoger `BaseDatos.sql`.
+2. **File → Open SQL Script** y escoger `base_de_datos_ferreteria.sql`.
 3. Ejecutarlo con el rayo (⚡).
 
 Se crea la base de datos `ferreteria` con sus 14 tablas, el usuario administrador, el usuario vendedor y datos de ejemplo (productos, clientes, ventas, créditos y compras) para probar el sistema de una vez. El script se puede correr varias veces y no borra datos.
-
-> `base_de_datos_ferreteria.sql` crea solo las tablas y el usuario administrador, sin datos de ejemplo.
 
 ### 3. Configurar la conexión
 
