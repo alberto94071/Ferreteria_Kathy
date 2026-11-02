@@ -14,8 +14,8 @@ Programa de escritorio en **Java (Swing)** con base de datos **MySQL** para cont
 | Video del recorrido del sistema | https://drive.google.com/file/d/1ZB6pAnYs-8sMwZHq7Co2MV7wXekgvnck/view?usp=sharing |
 | Carpeta con la documentación | https://drive.google.com/drive/folders/1HhfAhqTyGByWMeqfvk2N7Lty98vYcawm?usp=sharing |
 | PDF de ejemplo generados por el sistema | En la misma carpeta, dentro de **reportes pdf** (ComprobanteVenta.pdf y ReporteBajoStock.pdf) |
-| Script de la base de datos | [`BaseDatos.sql`](BaseDatos.sql) en este repositorio |
-| Descargar programa y app | [Release v1.1](https://github.com/alberto94071/Ferreteria_Kathy/releases/latest): `FerreteriaKathy_v1.1_Windows.zip` y `FerreteriaKathy.apk` |
+| Script de la base de datos | [`base_de_datos_ferreteria.sql`](base_de_datos_ferreteria.sql) en este repositorio |
+| Descargar programa y app | [Release v2.0](https://github.com/alberto94071/Ferreteria_Kathy/releases/latest): `FerreteriaKathy_v1.1_Windows.zip` y `FerreteriaKathy.apk` |
 | Última versión (release) | https://github.com/alberto94071/Ferreteria_Kathy/releases/latest |
 
 ## Integrantes
