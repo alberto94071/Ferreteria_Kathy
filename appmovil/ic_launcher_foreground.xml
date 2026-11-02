@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Ícono de la app: tuerca azul con martillo amarillo, como en el logotipo de Ferretería Kathy -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <path android:fillColor="#0B4983" android:pathData="M88.00,54.00 L71.00,81.09 L37.00,81.09 L20.00,54.00 L37.00,26.91 L71.00,26.91 Z" />
+    <path android:fillColor="#FFFFFF" android:pathData="M31.56,54.00 a22.44,22.44 0 1,0 44.88,0 a22.44,22.44 0 1,0 -44.88,0 Z" />
+    <path android:fillColor="#F6B238" android:pathData="M47.85,51.69 L51.69,47.85 L66.31,62.46 L62.46,66.31 Z" />
+    <path android:fillColor="#F6B238" android:pathData="M35.92,51.31 L49.00,38.23 L53.62,38.23 L54.38,43.61 L41.31,56.69 Z" />
+</vector>

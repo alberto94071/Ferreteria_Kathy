@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Colores del logotipo de Ferretería Kathy -->
+    <color name="azul">#0B4983</color>
+    <color name="amarillo">#F6B238</color>
+    <color name="azul_marino">#072F57</color>
+
+    <color name="acento">@color/azul</color>
+    <color name="acento_oscuro">@color/azul_marino</color>
+    <color name="menu">@color/azul_marino</color>
+    <color name="fondo">#F8FAFC</color>
+    <color name="fondo_claro">#F1F5FB</color>
+    <color name="blanco">#FFFFFF</color>
+    <color name="borde">#E2E8F0</color>
+    <color name="texto">#111827</color>
+    <color name="suave">#4B5563</color>
+    <color name="peligro">#B91C1C</color>
+    <color name="peligro_fondo">#FEF2F2</color>
+    <color name="alerta">#9A3412</color>
+    <color name="exito">#047857</color>
+</resources>
