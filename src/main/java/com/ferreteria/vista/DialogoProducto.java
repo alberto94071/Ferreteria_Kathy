@@ -26,7 +26,9 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-
+/**
+ * Formulario para crear o editar un producto (o un kit con sus componentes).
+ */
 public final class DialogoProducto {
 
     private static final String[] UNIDADES = {
@@ -119,6 +121,7 @@ public final class DialogoProducto {
         panelKit.add(botonesKit, BorderLayout.SOUTH);
         f.agregarCompleto(panelKit, true);
 
+        // ---- Cargar datos si es edición ----
         if (!nuevo) {
             codigo.setText(existente.getCodigo() == null ? "" : existente.getCodigo());
             nombre.setText(existente.getNombre());

@@ -33,6 +33,12 @@
             <artifactId>flatlaf</artifactId>
             <version>3.7.2</version>
         </dependency>
+        <!-- Generación de PDF (comprobante de venta y reporte de bajo stock) -->
+        <dependency>
+            <groupId>com.github.librepdf</groupId>
+            <artifactId>openpdf</artifactId>
+            <version>1.3.43</version>
+        </dependency>
     </dependencies>
 
     <build>

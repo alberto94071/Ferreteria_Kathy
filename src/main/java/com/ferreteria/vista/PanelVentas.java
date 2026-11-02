@@ -9,6 +9,7 @@ import com.ferreteria.modelo.DetalleVenta;
 import com.ferreteria.modelo.Producto;
 import com.ferreteria.modelo.Venta;
 import com.ferreteria.util.Formato;
+import com.ferreteria.util.ReportePDF;
 import com.ferreteria.util.Sesion;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -80,6 +81,7 @@ public class PanelVentas extends JPanel implements Pantalla {
 
         // Atajos de teclado
         registrarTecla(KeyEvent.VK_F12, this::confirmar);
+        // Supr solo cuando la tabla tiene el foco (para no estorbar al escribir)
         tabla.getInputMap(WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0), "quitar");
         tabla.getActionMap().put("quitar", new javax.swing.AbstractAction() {
             @Override
@@ -360,13 +362,16 @@ public class PanelVentas extends JPanel implements Pantalla {
             ventaDAO.registrar(venta, credito ? (Integer) spDias.getValue() : 0);
 
             String mensaje = "Venta No. " + venta.getIdVenta() + " registrada.\nTotal: " + Formato.dinero(venta.getTotal());
-            if (credito) {
-                Credito cr = creditoDAO.buscarPorVenta(venta.getIdVenta());
-                if (cr != null) {
-                    mensaje += "\nVence: " + Formato.fecha(cr.getFechaVencimiento());
-                }
+            Credito cr = credito ? creditoDAO.buscarPorVenta(venta.getIdVenta()) : null;
+            if (cr != null) {
+                mensaje += "\nVence: " + Formato.fecha(cr.getFechaVencimiento());
             }
-            Dialogos.info(this, mensaje);
+            if (Dialogos.confirmar(this, mensaje + "\n\n¿Desea generar el comprobante en PDF?")) {
+                final Venta registrada = venta;
+                final Credito creditoVenta = cr;
+                Dialogos.guardarPDF(this, "ComprobanteVenta_" + registrada.getIdVenta() + ".pdf",
+                        archivo -> ReportePDF.comprobanteVenta(registrada, creditoVenta, archivo));
+            }
             nuevaVenta();
             refrescar();
         });
@@ -414,6 +419,9 @@ public class PanelVentas extends JPanel implements Pantalla {
         campoProducto.requestFocus();
     }
 
+    // ---------- Ayudas de diseño ----------
+
+    // El color del botón seleccionado lo pone FlatLaf (ToggleButton.selectedBackground en Estilo)
     private void pintarToggle(JToggleButton b) {
         b.setForeground(b.isSelected() ? Color.WHITE : Estilo.TEXTO);
     }

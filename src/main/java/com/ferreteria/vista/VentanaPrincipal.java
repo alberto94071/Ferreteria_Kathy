@@ -34,11 +34,14 @@ import javax.swing.JPasswordField;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 
-
+/**
+ * Ventana principal: menú a la izquierda y la pantalla elegida a la derecha.
+ * Las pantallas se crean la primera vez que se abren (CardLayout).
+ */
 public class VentanaPrincipal extends JFrame {
 
     public static final String INICIO = "Inicio";
-    public static final String VENTAS = "Ventas.";
+    public static final String VENTAS = "Ventas";
     public static final String COMPRAS = "Compras";
     public static final String PRODUCTOS = "Productos";
     public static final String CREDITOS = "Créditos";
@@ -103,6 +106,7 @@ public class VentanaPrincipal extends JFrame {
         mostrar(INICIO);
     }
 
+    // Abre una pantalla del menú y recarga sus datos
     public void mostrar(String clave) {
         if (!fabricas.containsKey(clave)) {
             return;
@@ -130,6 +134,7 @@ public class VentanaPrincipal extends JFrame {
         menu.setBorder(Estilo.borde(16, 12, 16, 12));
         menu.setPreferredSize(new Dimension(210, 0));
 
+        // Logotipo arriba del menú (si no se encuentra la imagen, ícono + nombre)
         javax.swing.ImageIcon imagen = Logo.logoCompleto(186);
         JPanel marca = new JPanel(new BorderLayout(10, 0));
         marca.setOpaque(false);
@@ -154,7 +159,7 @@ public class VentanaPrincipal extends JFrame {
             return;
         }
         fabricas.put(clave, fabrica);
-       
+        // Botón que pinta su propio fondo redondeado (FlatLaf no lo pinta sin "content area")
         JButton b = new JButton(clave) {
             @Override
             protected void paintComponent(Graphics g) {

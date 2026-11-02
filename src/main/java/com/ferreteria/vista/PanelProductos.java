@@ -11,6 +11,7 @@ import com.ferreteria.modelo.Kit;
 import com.ferreteria.modelo.Marca;
 import com.ferreteria.modelo.Producto;
 import com.ferreteria.util.Formato;
+import com.ferreteria.util.ReportePDF;
 import com.ferreteria.util.Sesion;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -85,6 +86,11 @@ public class PanelProductos extends JPanel implements Pantalla {
         JPanel botones = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
         botones.setOpaque(false);
         JButton btnNuevo = Estilo.botonPrimario("+ Nuevo producto");
+        JButton btnReporte = Estilo.botonSecundario("Reporte bajo stock (PDF)");
+        btnReporte.addActionListener(e -> Dialogos.guardarPDF(this, "ReporteBajoStock.pdf",
+                archivo -> ReportePDF.reporteBajoStock(productoDAO.listarBajoStock(),
+                        Sesion.getUsuarioActual().getNombreUsuario(), archivo)));
+        botones.add(btnReporte);
         if (admin) {
             botones.add(btnEditar);
             botones.add(btnEliminar);

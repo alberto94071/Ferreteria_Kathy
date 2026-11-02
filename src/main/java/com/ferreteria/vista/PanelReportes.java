@@ -1,12 +1,14 @@
 package com.ferreteria.vista;
 
 import com.ferreteria.dao.CompraDAO;
+import com.ferreteria.dao.CreditoDAO;
 import com.ferreteria.dao.VentaDAO;
 import com.ferreteria.modelo.Compra;
 import com.ferreteria.modelo.DetalleCompra;
 import com.ferreteria.modelo.DetalleVenta;
 import com.ferreteria.modelo.Venta;
 import com.ferreteria.util.Formato;
+import com.ferreteria.util.ReportePDF;
 import com.ferreteria.util.Sesion;
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -270,10 +272,20 @@ public class PanelReportes extends JPanel implements Pantalla {
                 .dinero("Subtotal", 100, d -> d.getSubtotal());
         m.setFilas(v.getDetalles());
         String cliente = v.getCliente() == null ? "Consumidor final" : v.getCliente().toString();
+        JButton pdf = Estilo.botonSecundario("Comprobante PDF");
+        pdf.addActionListener(e -> comprobante(pdf, v));
         mostrarDetalle(padre, "Venta No. " + v.getIdVenta(),
                 Formato.fechaHora(v.getFecha()) + " · " + cliente + " · " + (v.isEsCredito() ? "Crédito" : "Contado")
                         + " · vendió " + v.getUsuario().getNombreUsuario(),
-                m, v.getTotal());
+                m, v.getTotal(), pdf);
+    }
+
+    /** Genera el comprobante de una venta registrada (con saldo si fue al crédito). */
+    public static void comprobante(Component padre, Venta v) {
+        Dialogos.guardarPDF(padre, "ComprobanteVenta_" + v.getIdVenta() + ".pdf", archivo -> {
+            com.ferreteria.modelo.Credito credito = v.isEsCredito() ? new CreditoDAO().buscarPorVenta(v.getIdVenta()) : null;
+            ReportePDF.comprobanteVenta(v, credito, archivo);
+        });
     }
 
     public static void detalleCompra(Component padre, Compra c) {
@@ -285,10 +297,11 @@ public class PanelReportes extends JPanel implements Pantalla {
         m.setFilas(c.getDetalles());
         mostrarDetalle(padre, "Compra No. " + c.getIdCompra(),
                 Formato.fechaHora(c.getFecha()) + " · " + c.getProveedor() + " · " + (c.isEsCredito() ? "Crédito" : "Contado"),
-                m, c.getTotal());
+                m, c.getTotal(), null);
     }
 
-    private static void mostrarDetalle(Component padre, String titulo, String subtitulo, ModeloTabla<?> m, double total) {
+    private static void mostrarDetalle(Component padre, String titulo, String subtitulo, ModeloTabla<?> m, double total,
+                                       JButton extra) {
         JDialog d = new JDialog(DialogoFormulario.ventanaDe(padre), titulo, JDialog.ModalityType.APPLICATION_MODAL);
         JPanel raiz = new JPanel(new BorderLayout(0, 12));
         raiz.setBorder(Estilo.borde(16, 20, 16, 20));
@@ -306,7 +319,13 @@ public class PanelReportes extends JPanel implements Pantalla {
         pie.add(lblTotal, BorderLayout.WEST);
         JButton cerrar = Estilo.botonSecundario("Cerrar");
         cerrar.addActionListener(e -> d.dispose());
-        pie.add(cerrar, BorderLayout.EAST);
+        JPanel botones = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
+        botones.setOpaque(false);
+        if (extra != null) {
+            botones.add(extra);
+        }
+        botones.add(cerrar);
+        pie.add(botones, BorderLayout.EAST);
         raiz.add(pie, BorderLayout.SOUTH);
         d.setContentPane(raiz);
         d.setSize(620, 420);
